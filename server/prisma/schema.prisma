@@ -1,0 +1,169 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("FARMER")
+  organization String
+  location     String
+  phone        String?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  batches           Batch[]
+  supplyChainEvents SupplyChainEvent[]
+  auditLogs         AuditLog[]
+}
+
+model Batch {
+  id              String   @id
+  product         String
+  crop            String
+  farmName        String
+  farmerId        String
+  farmerName      String
+  quantity        Float
+  unit            String
+  currentStage    String   @default("FARM")
+  currentLocation String
+  status          String   @default("ACTIVE")
+  iotNodeId       String?
+  qrToken         String?  @unique
+  description     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  farmer            User                @relation(fields: [farmerId], references: [id])
+  iotNode           IoTNode?            @relation(fields: [iotNodeId], references: [id])
+  supplyChainEvents SupplyChainEvent[]
+  blockchainEvents  BlockchainEvent[]
+  sensorReadings    SensorReading[]
+  alerts            Alert[]
+  qrCode            QRCode?
+}
+
+model IoTNode {
+  id              String   @id
+  batchId         String?
+  status          String   @default("ONLINE")
+  battery         Float    @default(100)
+  connectivity    String   @default("WIFI")
+  firmwareVersion String   @default("1.0.0")
+  lastSeen        DateTime @default(now())
+  latitude        Float
+  longitude       Float
+  locationLabel   String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  batches        Batch[]
+  sensorReadings SensorReading[]
+  alerts         Alert[]
+}
+
+model SensorReading {
+  id          String   @id @default(uuid())
+  nodeId      String
+  batchId     String?
+  temperature Float
+  humidity    Float
+  latitude    Float
+  longitude   Float
+  battery     Float
+  synced      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  node  IoTNode @relation(fields: [nodeId], references: [id])
+  batch Batch?  @relation(fields: [batchId], references: [id])
+}
+
+model SupplyChainEvent {
+  id               String   @id @default(uuid())
+  batchId          String
+  stage            String
+  eventType        String   @default("TRANSFERRED")
+  action           String?
+  location         String
+  latitude         Float?
+  longitude        Float?
+  actorId          String
+  actorName        String
+  actorRole        String
+  temperature      Float?
+  humidity         Float?
+  notes            String?
+  blockchainTxHash String?
+  createdAt        DateTime @default(now())
+
+  batch Batch @relation(fields: [batchId], references: [id])
+  actor User  @relation(fields: [actorId], references: [id])
+}
+
+model BlockchainEvent {
+  id          String    @id @default(uuid())
+  batchId     String
+  eventType   String
+  actorId     String?
+  actorName   String?
+  actorRole   String?
+  txHash      String    @unique
+  blockNumber Int
+  status      String    @default("PENDING")
+  data        String?
+  createdAt   DateTime  @default(now())
+  confirmedAt DateTime?
+
+  batch Batch @relation(fields: [batchId], references: [id])
+}
+
+model QRCode {
+  id        String   @id @default(uuid())
+  batchId   String   @unique
+  token     String   @unique
+  createdBy String?
+  createdAt DateTime @default(now())
+
+  batch Batch @relation(fields: [batchId], references: [id])
+}
+
+model Alert {
+  id           String    @id @default(uuid())
+  type         String
+  severity     String
+  title        String
+  message      String
+  batchId      String?
+  nodeId       String?
+  value        Float?
+  threshold    Float?
+  acknowledged Boolean   @default(false)
+  resolvedAt   DateTime?
+  createdAt    DateTime  @default(now())
+
+  batch Batch?   @relation(fields: [batchId], references: [id])
+  node  IoTNode? @relation(fields: [nodeId], references: [id])
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String
+  action     String
+  entity     String?
+  entityType String?
+  entityId   String?
+  details    String?
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}

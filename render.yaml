@@ -1,0 +1,42 @@
+services:
+  - type: web
+    name: inovix-backend
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: inovix-postgres
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: FRONTEND_URL
+        sync: false # Set to your Netlify URL e.g. https://your-site.netlify.app
+      - key: IOT_SIMULATOR_INTERVAL_MS
+        value: 5000
+      - key: ALERT_TEMP_MAX
+        value: 30
+      - key: ALERT_TEMP_MIN
+        value: 2
+      - key: ALERT_HUMIDITY_MAX
+        value: 70
+      - key: ALERT_HUMIDITY_MIN
+        value: 40
+      - key: ALERT_BATTERY_LOW
+        value: 20
+      - key: ALERT_CONNECTIVITY_TIMEOUT_MIN
+        value: 15
+
+databases:
+  - name: inovix-postgres
+    databaseName: inovix
+    user: inovix_admin
+    plan: free
