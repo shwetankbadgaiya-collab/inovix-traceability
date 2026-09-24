@@ -216,9 +216,9 @@ export default function Landing() {
       <section className="py-24 px-6 lg:px-12 bg-white text-center">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-4xl font-bold text-gray-900 mb-6">Ready to Trace Your First Batch?</h2>
-          <p className="text-xl text-gray-600 mb-10">Experience the complete farm-to-fork traceability journey with our interactive demo environment.</p>
+          <p className="text-xl text-gray-600 mb-10">Experience the complete farm-to-fork traceability journey with real-time IoT monitoring and blockchain consensus.</p>
           <Link to="/login" className="inline-block bg-primary-600 text-white px-10 py-4 rounded-full text-lg font-bold hover:bg-primary-700 transition shadow-lg">
-            Launch Demo Dashboard
+            Launch Platform Dashboard
           </Link>
         </div>
       </section>

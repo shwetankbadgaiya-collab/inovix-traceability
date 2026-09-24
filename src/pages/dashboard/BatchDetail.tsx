@@ -78,7 +78,7 @@ export default function BatchDetail() {
   }
 
   const allStages = [
-    { name: 'FARM', defaultLoc: 'Jabalpur Farm', desc: 'Harvested & Quality Checked at source' },
+    { name: 'FARM', defaultLoc: 'Green Valley Farm, Jabalpur', desc: 'Harvested & Quality Checked at source' },
     { name: 'COLLECTION', defaultLoc: 'Central Aggregation Depot', desc: 'Graded, weighed, and IoT sensor tagged' },
     { name: 'PROCESSING', defaultLoc: 'EcoFoods Processing Unit', desc: 'Cleaned, sorted, and certified organic' },
     { name: 'WAREHOUSE', defaultLoc: 'Central Cold Storage, Nagpur', desc: 'Stored in temperature-controlled zone (4-6°C)' },
@@ -105,7 +105,7 @@ export default function BatchDetail() {
               </span>
             </div>
             <p className="text-sm text-gray-500 mt-0.5">
-              {batch?.productName} • {batch?.quantity} {batch?.unit} • Origin: {batch?.origin || 'Jabalpur Farm'}
+              {batch?.productName} • {batch?.quantity} {batch?.unit} • Origin: {batch?.origin || 'Green Valley Farm, Jabalpur'}
             </p>
           </div>
         </div>
@@ -148,11 +148,11 @@ export default function BatchDetail() {
             </div>
             <div className="flex justify-between">
               <span className="text-gray-500">Origin Farm</span>
-              <span className="font-medium text-gray-800">{batch?.origin || 'Jabalpur Farm'}</span>
+              <span className="font-medium text-gray-800">{batch?.origin || 'Green Valley Farm, Jabalpur'}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-500">Producer / Farmer</span>
-              <span className="font-medium text-gray-800">{batch?.farmer || 'Demo Farmer'}</span>
+              <span className="font-medium text-gray-800">{batch?.farmer || 'Rajesh Kumar'}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-500">Net Quantity</span>

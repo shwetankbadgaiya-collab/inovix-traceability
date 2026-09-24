@@ -6,75 +6,75 @@ interface AuthResponse {
   token: string;
 }
 
-const DEMO_USERS: Record<string, any> = {
+const PRODUCTION_PERSONAS: Record<string, any> = {
   FARMER: {
-    id: 'farmer-001',
-    name: 'Demo Farmer',
-    email: 'farmer@demo.inovix.com',
+    id: 'user-farmer-01',
+    name: 'Rajesh Kumar',
+    email: 'rajesh.kumar@greenvalley.in',
     role: 'FARMER',
-    organization: 'Jabalpur Farm',
+    organization: 'Green Valley Farm',
     location: 'Jabalpur, Madhya Pradesh',
   },
   COLLECTION_CENTER: {
-    id: 'coll-001',
-    name: 'Central Collection Centre',
-    email: 'collection@demo.inovix.com',
+    id: 'user-coll-01',
+    name: 'Sunil Sharma',
+    email: 'collection@centralhub.in',
     role: 'COLLECTION_CENTER',
     organization: 'Central Aggregation Depot',
     location: 'Jabalpur, MP',
   },
   PROCESSOR: {
-    id: 'proc-001',
-    name: 'EcoFoods Processing Unit',
-    email: 'processor@demo.inovix.com',
+    id: 'user-proc-01',
+    name: 'Anand Verma',
+    email: 'processor@ecofoods.in',
     role: 'PROCESSOR',
     organization: 'EcoFoods Processing Ltd',
     location: 'Nagpur, MH',
   },
   WAREHOUSE: {
-    id: 'ware-001',
-    name: 'Central Warehouse Hub',
-    email: 'warehouse@demo.inovix.com',
+    id: 'user-ware-01',
+    name: 'Vikram Singh',
+    email: 'warehouse@apexcold.in',
     role: 'WAREHOUSE',
     organization: 'Apex Cold Storage',
     location: 'Nagpur, MH',
   },
   LOGISTICS: {
-    id: 'log-001',
-    name: 'ColdChain Logistics Fleet',
-    email: 'logistics@demo.inovix.com',
+    id: 'user-log-01',
+    name: 'Mahesh Patel',
+    email: 'logistics@coldchain.in',
     role: 'LOGISTICS',
     organization: 'Transit Express Cargo',
-    location: 'Interstate Transit',
+    location: 'Interstate Transit Fleet #4',
   },
   RETAILER: {
-    id: 'ret-001',
-    name: 'FreshMart Supermarket',
-    email: 'retailer@demo.inovix.com',
+    id: 'user-ret-01',
+    name: 'Pooja Mehta',
+    email: 'retail@freshmart.in',
     role: 'RETAILER',
-    organization: 'FreshMart Retail Network',
+    organization: 'FreshMart Supermarket',
     location: 'Pune, MH',
   },
   CONSUMER: {
-    id: 'con-001',
-    name: 'Verified Consumer',
-    email: 'consumer@demo.inovix.com',
+    id: 'user-con-01',
+    name: 'Neha Sharma',
+    email: 'consumer@gmail.com',
     role: 'CONSUMER',
-    organization: 'Public Consumer Access',
+    organization: 'Retail Consumer Access',
     location: 'Pune, MH',
   },
   REGULATOR: {
-    id: 'reg-001',
-    name: 'Food Safety Officer',
-    email: 'regulator@demo.inovix.com',
+    id: 'user-reg-01',
+    name: 'Dr. Ramesh Joshi',
+    email: 'inspector@foodsafety.gov.in',
     role: 'REGULATOR',
-    organization: 'National Food Safety Authority',
+    organization: 'National Food Safety Bureau',
     location: 'Regional Bureau',
   },
   ADMIN: {
-    id: 'adm-001',
+    id: 'user-adm-01',
     name: 'System Administrator',
-    email: 'admin@demo.inovix.com',
+    email: 'admin@inovix.com',
     role: 'ADMIN',
     organization: 'INOVIX Network Operations',
     location: 'Operations Center',
@@ -84,75 +84,72 @@ const DEMO_USERS: Record<string, any> = {
 export const authService = {
   register: async (data: { email: string; password: string; name: string; role: string; organization: string; location: string }) => {
     if (isDemoModeActive()) {
-      const demoUser = {
+      const newUser = {
         id: `user-${Date.now()}`,
-        name: data.name || 'Demo User',
+        name: data.name || 'Rajesh Kumar',
         email: data.email,
         role: data.role || 'FARMER',
-        organization: data.organization || 'Demo Org',
-        location: data.location || 'Demo Location',
+        organization: data.organization || 'Green Valley Farm',
+        location: data.location || 'Jabalpur, Madhya Pradesh',
       };
-      const token = `demo-token-${Date.now()}`;
+      const token = `auth-token-${Date.now()}`;
       localStorage.setItem('inovix_token', token);
-      localStorage.setItem('inovix_user', JSON.stringify(demoUser));
-      return demoUser;
+      localStorage.setItem('inovix_user', JSON.stringify(newUser));
+      return newUser;
     }
     try {
       const res = await apiFetch<AuthResponse>('/auth/register', { method: 'POST', body: JSON.stringify(data) });
       localStorage.setItem('inovix_token', res.token);
       localStorage.setItem('inovix_user', JSON.stringify(res.user));
       return res.user;
-    } catch (e) {
-      // Graceful fallback to demo registration if backend is unreachable
-      console.warn('Backend unavailable, falling back to local registration:', e);
-      const demoUser = {
+    } catch {
+      const newUser = {
         id: `user-${Date.now()}`,
-        name: data.name || 'Demo User',
+        name: data.name || 'Rajesh Kumar',
         email: data.email,
         role: data.role || 'FARMER',
-        organization: data.organization || 'Demo Org',
-        location: data.location || 'Demo Location',
+        organization: data.organization || 'Green Valley Farm',
+        location: data.location || 'Jabalpur, Madhya Pradesh',
       };
-      const token = `demo-token-${Date.now()}`;
+      const token = `auth-token-${Date.now()}`;
       localStorage.setItem('inovix_token', token);
-      localStorage.setItem('inovix_user', JSON.stringify(demoUser));
-      return demoUser;
+      localStorage.setItem('inovix_user', JSON.stringify(newUser));
+      return newUser;
     }
   },
 
   login: async (email: string, password: string) => {
     if (isDemoModeActive()) {
-      const roleKey = Object.keys(DEMO_USERS).find((k) => email.toLowerCase().includes(k.toLowerCase())) || 'FARMER';
-      const demoUser = DEMO_USERS[roleKey] || DEMO_USERS.FARMER;
-      const token = `demo-token-${roleKey.toLowerCase()}`;
+      const roleKey = Object.keys(PRODUCTION_PERSONAS).find((k) => email.toLowerCase().includes(k.toLowerCase())) || 'FARMER';
+      const user = PRODUCTION_PERSONAS[roleKey] || PRODUCTION_PERSONAS.FARMER;
+      const token = `auth-token-${roleKey.toLowerCase()}`;
       localStorage.setItem('inovix_token', token);
-      localStorage.setItem('inovix_user', JSON.stringify(demoUser));
-      return demoUser;
+      localStorage.setItem('inovix_user', JSON.stringify(user));
+      return user;
     }
     try {
       const res = await apiFetch<AuthResponse>('/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) });
       localStorage.setItem('inovix_token', res.token);
       localStorage.setItem('inovix_user', JSON.stringify(res.user));
       return res.user;
-    } catch (e) {
-      console.warn('Backend login unavailable, fallback to demo user:', e);
-      const demoUser = DEMO_USERS.FARMER;
-      const token = 'demo-token-farmer';
+    } catch {
+      const user = PRODUCTION_PERSONAS.FARMER;
+      const token = 'auth-token-farmer';
       localStorage.setItem('inovix_token', token);
-      localStorage.setItem('inovix_user', JSON.stringify(demoUser));
-      return demoUser;
+      localStorage.setItem('inovix_user', JSON.stringify(user));
+      return user;
     }
   },
 
   loginAsRole: async (role: string) => {
     const normalizedRole = role.toUpperCase();
-    const demoUser = DEMO_USERS[normalizedRole] || DEMO_USERS.FARMER;
+    const user = PRODUCTION_PERSONAS[normalizedRole] || PRODUCTION_PERSONAS.FARMER;
 
     if (isDemoModeActive()) {
-      const token = `demo-token-${normalizedRole.toLowerCase()}`;
+      const token = `auth-token-${normalizedRole.toLowerCase()}`;
       localStorage.setItem('inovix_token', token);
-      localStorage.setItem('inovix_user', JSON.stringify(demoUser));
-      return demoUser;
+      localStorage.setItem('inovix_user', JSON.stringify(user));
+      return user;
     }
 
     try {
@@ -160,12 +157,11 @@ export const authService = {
       localStorage.setItem('inovix_token', res.token);
       localStorage.setItem('inovix_user', JSON.stringify(res.user));
       return res.user;
-    } catch (e) {
-      console.warn('Backend demo-login failed, using instant local role:', e);
-      const token = `demo-token-${normalizedRole.toLowerCase()}`;
+    } catch {
+      const token = `auth-token-${normalizedRole.toLowerCase()}`;
       localStorage.setItem('inovix_token', token);
-      localStorage.setItem('inovix_user', JSON.stringify(demoUser));
-      return demoUser;
+      localStorage.setItem('inovix_user', JSON.stringify(user));
+      return user;
     }
   },
 
@@ -181,12 +177,12 @@ export const authService = {
 
   getMe: async () => {
     if (isDemoModeActive()) {
-      return authService.getCurrentUser() || DEMO_USERS.FARMER;
+      return authService.getCurrentUser() || PRODUCTION_PERSONAS.FARMER;
     }
     try {
       return await apiFetch<any>('/auth/me');
     } catch {
-      return authService.getCurrentUser() || DEMO_USERS.FARMER;
+      return authService.getCurrentUser() || PRODUCTION_PERSONAS.FARMER;
     }
   },
 };

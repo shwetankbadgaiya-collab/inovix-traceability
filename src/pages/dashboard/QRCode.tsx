@@ -236,7 +236,7 @@ export default function QRCodePage() {
                   type="text"
                   value={scanToken} 
                   onChange={(e) => setScanToken(e.target.value)} 
-                  placeholder="e.g. VTOK-TOMATO-8812 or BATCH-2026-001" 
+                  placeholder="e.g. VTOK-TOMATO-8812 or INVX-2026-001" 
                   className="input-field text-sm font-mono flex-1" 
                 />
                 <button 
@@ -249,7 +249,7 @@ export default function QRCodePage() {
                 </button>
               </div>
               <p className="text-xs text-gray-400 mt-1">
-                Accepts generated token (e.g. VTOK-TOMATO-8812) or Batch ID (e.g. BATCH-2026-001)
+                Accepts generated token (e.g. VTOK-TOMATO-8812) or Batch ID (e.g. INVX-2026-001)
               </p>
             </div>
           </form>
@@ -290,7 +290,7 @@ export default function QRCodePage() {
                 </div>
                 <div>
                   <span className="text-xs text-gray-400 block uppercase font-medium">Origin</span>
-                  <span className="font-semibold text-gray-800">{scanResult.batch.origin || 'Jabalpur Farm'}</span>
+                  <span className="font-semibold text-gray-800">{scanResult.batch.origin || 'Green Valley Farm, Jabalpur'}</span>
                 </div>
                 <div className="col-span-2 pt-2 border-t border-gray-100 flex justify-between items-center">
                   <span className="text-xs text-gray-400 uppercase font-medium">Verification Status</span>

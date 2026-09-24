@@ -25,8 +25,8 @@ export default function Batches({ initialCreate = false }: BatchesProps) {
 
   const [newBatch, setNewBatch] = useState({
     productName: '',
-    farmer: 'Demo Farmer',
-    origin: 'Jabalpur Farm',
+    farmer: 'Rajesh Kumar',
+    origin: 'Green Valley Farm',
     quantity: 500,
     unit: 'kg',
   });
@@ -65,7 +65,7 @@ export default function Batches({ initialCreate = false }: BatchesProps) {
       setError('');
       const created = await batchService.create(newBatch);
       setIsCreating(false);
-      setNewBatch({ productName: '', farmer: 'Demo Farmer', origin: 'Jabalpur Farm', quantity: 500, unit: 'kg' });
+      setNewBatch({ productName: '', farmer: 'Rajesh Kumar', origin: 'Green Valley Farm', quantity: 500, unit: 'kg' });
       setSuccessMsg(`Batch ${created.id} (${created.productName}) registered successfully!`);
       setTimeout(() => setSuccessMsg(''), 6000);
       await fetchBatches();
@@ -230,7 +230,7 @@ export default function Batches({ initialCreate = false }: BatchesProps) {
           <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input 
             type="text" 
-            placeholder="Search batches by ID or product (e.g. Tomatoes, BATCH-2026-001)..." 
+            placeholder="Search batches by ID or product (e.g. Tomatoes, INVX-2026-001)..." 
             value={search} 
             onChange={e => setSearch(e.target.value)} 
             className="input-field pl-10 text-sm" 
@@ -293,8 +293,8 @@ export default function Batches({ initialCreate = false }: BatchesProps) {
                       {b.productName}
                     </td>
                     <td className="p-4 text-gray-600">
-                      <div>{b.farmer || 'Demo Farmer'}</div>
-                      <div className="text-xs text-gray-400">{b.origin || 'Jabalpur Farm'}</div>
+                      <div>{b.farmer || 'Rajesh Kumar'}</div>
+                      <div className="text-xs text-gray-400">{b.origin || 'Green Valley Farm'}</div>
                     </td>
                     <td className="p-4 text-gray-700 font-medium">
                       {b.quantity} {b.unit}

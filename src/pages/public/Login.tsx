@@ -5,10 +5,10 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Logo } from '../../components/ui/Logo';
 import {
   Sprout, Building2, Factory, Warehouse as WarehouseIcon, Truck,
-  Store, Users, ShieldCheck, Settings, Mail, Lock, AlertCircle, Loader2, Sparkles, ArrowRight
+  Store, Users, ShieldCheck, Settings, Mail, Lock, AlertCircle, Loader2, UserCheck, ArrowRight
 } from 'lucide-react';
 
-const DEMO_ROLES = [
+const STAKEHOLDER_ROLES = [
   { role: 'FARMER', label: 'Farmer', icon: Sprout, color: 'border-green-500 bg-green-50 hover:bg-green-100' },
   { role: 'COLLECTION_CENTER', label: 'Collection Hub', icon: Building2, color: 'border-emerald-500 bg-emerald-50 hover:bg-emerald-100' },
   { role: 'PROCESSOR', label: 'Food Processor', icon: Factory, color: 'border-blue-500 bg-blue-50 hover:bg-blue-100' },
@@ -23,11 +23,11 @@ const DEMO_ROLES = [
 export default function Login() {
   const navigate = useNavigate();
   const { login, loginAsRole } = useAuth();
-  const [email, setEmail] = useState('farmer@demo.inovix.com');
+  const [email, setEmail] = useState('rajesh.kumar@greenvalley.in');
   const [password, setPassword] = useState('password123');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [demoLoading, setDemoLoading] = useState<string | null>(null);
+  const [authenticatingRole, setAuthenticatingRole] = useState<string | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,16 +44,16 @@ export default function Login() {
     }
   };
 
-  const handleDemoLogin = async (role: string) => {
+  const handleQuickRoleLogin = async (role: string) => {
     setError('');
-    setDemoLoading(role);
+    setAuthenticatingRole(role);
     try {
       await loginAsRole(role);
       navigate('/dashboard');
     } catch (err: any) {
-      setError(err.message || 'Demo login failed.');
+      setError(err.message || 'Sign in failed.');
     } finally {
-      setDemoLoading(null);
+      setAuthenticatingRole(null);
     }
   };
 
@@ -77,20 +77,20 @@ export default function Login() {
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
           <div className="lg:hidden mb-6"><Logo size="md" /></div>
           <h2 className="text-2xl font-extrabold text-gray-900">Sign in to INOVIX</h2>
-          <p className="text-gray-500 text-sm mt-1">Access the live farm-to-fork demo dashboard</p>
+          <p className="text-gray-500 text-sm mt-1">Farm-to-Fork Traceability Platform</p>
 
-          {/* Prominent Demo Access Button for Judges */}
+          {/* Quick Access as Farmer (Rajesh Kumar) */}
           <div className="mt-5">
             <button
-              onClick={() => handleDemoLogin('FARMER')}
-              disabled={!!demoLoading}
+              onClick={() => handleQuickRoleLogin('FARMER')}
+              disabled={!!authenticatingRole}
               className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 px-4 rounded-xl font-bold shadow-md hover:from-primary-700 hover:to-primary-800 flex items-center justify-between transition-all"
             >
               <div className="flex items-center gap-2.5">
-                <Sparkles className="w-5 h-5 text-yellow-300" />
-                <span className="text-sm">Demo Access: Launch as Farmer (1-Click)</span>
+                <UserCheck className="w-5 h-5 text-white" />
+                <span className="text-sm">Sign in as Rajesh Kumar (Farmer)</span>
               </div>
-              {demoLoading === 'FARMER' ? <Loader2 className="w-4 h-4 animate-spin" /> : <ArrowRight className="w-4 h-4" />}
+              {authenticatingRole === 'FARMER' ? <Loader2 className="w-4 h-4 animate-spin" /> : <ArrowRight className="w-4 h-4" />}
             </button>
           </div>
 
@@ -101,37 +101,37 @@ export default function Login() {
             </div>
           )}
 
-          {/* Quick Demo Roles Grid */}
+          {/* Stakeholder Personas Grid */}
           <div className="mt-6">
             <div className="relative mb-4">
               <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200"></div></div>
               <div className="relative flex justify-center text-xs uppercase tracking-wider">
-                <span className="px-3 bg-gray-50 text-gray-400 font-semibold">Or Switch Stakeholder Persona</span>
+                <span className="px-3 bg-gray-50 text-gray-400 font-semibold">Or Select Stakeholder Role</span>
               </div>
             </div>
 
             <div className="grid grid-cols-3 gap-2.5">
-              {DEMO_ROLES.map(({ role, label, icon: Icon, color }) => (
+              {STAKEHOLDER_ROLES.map(({ role, label, icon: Icon, color }) => (
                 <button
                   key={role}
                   type="button"
-                  onClick={() => handleDemoLogin(role)}
-                  disabled={!!demoLoading}
+                  onClick={() => handleQuickRoleLogin(role)}
+                  disabled={!!authenticatingRole}
                   className={`flex flex-col items-center gap-1.5 p-2.5 rounded-xl border-2 ${color} transition-all text-[11px] font-semibold text-gray-700 disabled:opacity-50`}
                 >
-                  {demoLoading === role ? <Loader2 className="w-4 h-4 animate-spin text-primary-600" /> : <Icon className="w-4 h-4" />}
+                  {authenticatingRole === role ? <Loader2 className="w-4 h-4 animate-spin text-primary-600" /> : <Icon className="w-4 h-4" />}
                   <span className="truncate w-full text-center">{label}</span>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Standard Email/Password Form */}
+          {/* Standard Credentials Form */}
           <div className="mt-6">
             <div className="relative mb-4">
               <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200"></div></div>
               <div className="relative flex justify-center text-xs uppercase tracking-wider">
-                <span className="px-3 bg-gray-50 text-gray-400 font-semibold">Or Sign In with Credentials</span>
+                <span className="px-3 bg-gray-50 text-gray-400 font-semibold">Or Sign in with Email</span>
               </div>
             </div>
 
@@ -144,7 +144,7 @@ export default function Login() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="farmer@demo.inovix.com"
+                    placeholder="rajesh.kumar@greenvalley.in"
                     className="input-field pl-9 text-xs sm:text-sm"
                   />
                 </div>
@@ -167,7 +167,7 @@ export default function Login() {
                 disabled={loading}
                 className="btn-secondary w-full flex items-center justify-center gap-2 py-2.5 text-xs sm:text-sm"
               >
-                {loading ? <><Loader2 className="w-4 h-4 animate-spin" />Signing in...</> : 'Sign In with Account'}
+                {loading ? <><Loader2 className="w-4 h-4 animate-spin" />Signing in...</> : 'Sign In'}
               </button>
             </form>
           </div>

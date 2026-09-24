@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Bell, Sparkles } from 'lucide-react';
+import { Menu, Bell } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { StatusDot } from '../ui/StatusDot';
 import { useAuth } from '../../contexts/AuthContext';
@@ -7,7 +7,7 @@ import { useDemo } from '../../contexts/DemoContext';
 
 export const Navbar: React.FC<{ onMenuClick?: () => void }> = ({ onMenuClick }) => {
   const { user } = useAuth();
-  const { isDemoMode, toggleDemo: toggleDemoMode, isOnline, bufferedReadings: bufferedCount } = useDemo();
+  const { isOnline, bufferedReadings: bufferedCount } = useDemo();
   const location = useLocation();
 
   const pathSegments = location.pathname.split('/').filter(Boolean);
@@ -16,7 +16,7 @@ export const Navbar: React.FC<{ onMenuClick?: () => void }> = ({ onMenuClick }) 
     : 'Dashboard';
 
   return (
-    <header className="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-4 sticky top-0 z-10">
+    <header className="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-10">
       <div className="flex items-center gap-3">
         <button 
           onClick={onMenuClick}
@@ -24,31 +24,17 @@ export const Navbar: React.FC<{ onMenuClick?: () => void }> = ({ onMenuClick }) 
         >
           <Menu size={24} />
         </button>
-        <h1 className="text-lg font-semibold text-gray-800 capitalize hidden sm:block">
+        <h1 className="text-lg font-bold text-gray-800 capitalize hidden sm:block">
           {pageTitle}
         </h1>
       </div>
 
-      <div className="flex items-center gap-3 sm:gap-4">
-        {/* Demo Mode Toggle Button */}
-        <button
-          onClick={toggleDemoMode}
-          title={isDemoMode ? "Demo Mode Active (Using local reliable state). Click to toggle Live API." : "Live Backend Mode. Click to switch to Demo Mode."}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm ${
-            isDemoMode 
-              ? 'bg-emerald-600 text-white shadow-[0_0_12px_rgba(16,185,129,0.35)] hover:bg-emerald-700' 
-              : 'bg-gray-100 text-gray-700 border border-gray-300 hover:bg-gray-200'
-          }`}
-        >
-          <Sparkles className={`w-3.5 h-3.5 ${isDemoMode ? 'text-yellow-300' : 'text-gray-400'}`} />
-          <span>{isDemoMode ? 'Demo Mode: ON' : 'Live API'}</span>
-        </button>
-
-        {/* Network Status */}
-        <div className="hidden sm:flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-full border border-gray-200">
+      <div className="flex items-center gap-3 sm:gap-5">
+        {/* Network & Node Connectivity Status */}
+        <div className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-full border border-gray-200">
           <StatusDot status={isOnline ? 'online' : 'offline'} />
-          <span className="text-xs font-medium text-gray-600">
-            {isOnline ? 'Online' : `Offline (${bufferedCount})`}
+          <span className="text-xs font-semibold text-gray-700">
+            {isOnline ? 'Network: Synchronized' : `Offline Buffering (${bufferedCount})`}
           </span>
         </div>
 
@@ -58,9 +44,15 @@ export const Navbar: React.FC<{ onMenuClick?: () => void }> = ({ onMenuClick }) 
           <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
         </button>
 
-        {/* Mobile Avatar */}
-        <div className="md:hidden w-8 h-8 rounded-full bg-primary-100 text-primary-800 font-bold overflow-hidden flex items-center justify-center text-xs">
-          {user?.name?.charAt(0) || 'D'}
+        {/* User Identity Display */}
+        <div className="flex items-center gap-2.5 pl-2 border-l border-gray-200">
+          <div className="w-8 h-8 rounded-full bg-primary-100 text-primary-800 font-bold overflow-hidden flex items-center justify-center text-xs">
+            {user?.name?.charAt(0) || 'R'}
+          </div>
+          <div className="hidden md:block text-left">
+            <p className="text-xs font-bold text-gray-900 leading-tight">{user?.name || 'Rajesh Kumar'}</p>
+            <p className="text-[10px] text-gray-500 font-medium">{user?.role || 'Farmer'}</p>
+          </div>
         </div>
       </div>
     </header>

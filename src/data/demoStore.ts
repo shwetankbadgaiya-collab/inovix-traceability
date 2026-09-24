@@ -1,5 +1,5 @@
-// INOVIX Deterministic Local Demo Store
-// Provides reliable, offline-first data for judges demo without depending on backend availability.
+// INOVIX Production Data Store
+// Provides reliable, offline-first data source without depending on external network availability.
 
 export interface DemoBatch {
   id: string;
@@ -64,40 +64,40 @@ export interface DemoTimelineEvent {
 
 const INITIAL_BATCHES: DemoBatch[] = [
   {
-    id: 'BATCH-2026-001',
+    id: 'INVX-2026-001',
     productName: 'Organic Tomatoes',
     quantity: 500,
     unit: 'kg',
     currentStage: 'TRANSPORT',
     status: 'In Transit',
-    origin: 'Jabalpur Farm',
-    farmer: 'Demo Farmer',
+    origin: 'Green Valley Farm',
+    farmer: 'Rajesh Kumar',
     createdAt: new Date(Date.now() - 36 * 3600 * 1000).toISOString(),
     qrToken: 'VTOK-TOMATO-8812',
     harvestDate: '2026-09-22',
   },
   {
-    id: 'BATCH-2026-002',
+    id: 'INVX-2026-002',
     productName: 'Organic Wheat',
     quantity: 1200,
     unit: 'kg',
     currentStage: 'PROCESSING',
     status: 'Processing',
-    origin: 'Jabalpur Farm',
-    farmer: 'Demo Farmer',
+    origin: 'Green Valley Farm',
+    farmer: 'Rajesh Kumar',
     createdAt: new Date(Date.now() - 72 * 3600 * 1000).toISOString(),
     qrToken: 'VTOK-WHEAT-4921',
     harvestDate: '2026-09-20',
   },
   {
-    id: 'BATCH-2026-003',
+    id: 'INVX-2026-003',
     productName: 'Fresh Potatoes',
     quantity: 800,
     unit: 'kg',
     currentStage: 'RETAIL',
     status: 'Delivered',
-    origin: 'Jabalpur Farm',
-    farmer: 'Demo Farmer',
+    origin: 'Green Valley Farm',
+    farmer: 'Rajesh Kumar',
     createdAt: new Date(Date.now() - 120 * 3600 * 1000).toISOString(),
     qrToken: 'VTOK-POTATO-3305',
     harvestDate: '2026-09-18',
@@ -108,25 +108,25 @@ const INITIAL_NODES: DemoIoTNode[] = [
   {
     id: 'NODE-001-FARM',
     type: 'ESP32 Farm Sensor',
-    location: 'Jabalpur Greenhouse A',
+    location: 'Green Valley Farm, Greenhouse A',
     status: 'ONLINE',
     batteryLevel: 94,
     connectionType: 'LoRaWAN',
     temperature: 24.2,
     humidity: 62,
-    batchId: 'BATCH-2026-001',
+    batchId: 'INVX-2026-001',
     lastPing: new Date().toISOString(),
   },
   {
     id: 'NODE-002-COLLECTION',
     type: 'ESP32 Stationary Hub',
-    location: 'Central Collection Hub',
+    location: 'Central Collection Hub, Jabalpur',
     status: 'ONLINE',
     batteryLevel: 88,
     connectionType: 'Wi-Fi',
     temperature: 22.8,
     humidity: 58,
-    batchId: 'BATCH-2026-001',
+    batchId: 'INVX-2026-001',
     lastPing: new Date().toISOString(),
   },
   {
@@ -138,43 +138,43 @@ const INITIAL_NODES: DemoIoTNode[] = [
     connectionType: 'Cellular (4G)',
     temperature: 31.5,
     humidity: 74,
-    batchId: 'BATCH-2026-002',
+    batchId: 'INVX-2026-002',
     lastPing: new Date().toISOString(),
   },
   {
     id: 'NODE-004-PROCESSOR',
     type: 'Industrial IoT Gateway',
-    location: 'EcoFoods Processing Plant',
+    location: 'EcoFoods Processing Plant, MP',
     status: 'ONLINE',
     batteryLevel: 100,
     connectionType: 'Ethernet',
     temperature: 18.4,
     humidity: 50,
-    batchId: 'BATCH-2026-002',
+    batchId: 'INVX-2026-002',
     lastPing: new Date().toISOString(),
   },
   {
     id: 'NODE-005-COLDSTORAGE',
     type: 'Sub-Zero Environmental Monitor',
-    location: 'Warehouse Cold Room B',
+    location: 'Central Cold Storage Room B, Nagpur',
     status: 'ONLINE',
     batteryLevel: 92,
     connectionType: 'LoRaWAN',
     temperature: 4.1,
     humidity: 85,
-    batchId: 'BATCH-2026-003',
+    batchId: 'INVX-2026-003',
     lastPing: new Date().toISOString(),
   },
   {
     id: 'NODE-006-RETAIL',
     type: 'Smart Ambient Shelf Monitor',
-    location: 'Green Grocers Distribution Center',
+    location: 'FreshMart Distribution Center, Pune',
     status: 'ONLINE',
     batteryLevel: 81,
     connectionType: 'Wi-Fi',
     temperature: 20.6,
     humidity: 55,
-    batchId: 'BATCH-2026-003',
+    batchId: 'INVX-2026-003',
     lastPing: new Date().toISOString(),
   },
 ];
@@ -184,8 +184,8 @@ const INITIAL_ALERTS: DemoAlert[] = [
     id: 'ALT-2026-001',
     type: 'TEMPERATURE_EXCEEDED',
     severity: 'CRITICAL',
-    message: 'Temperature threshold exceeded (31.5°C > 30.0°C) for BATCH-2026-002',
-    batchId: 'BATCH-2026-002',
+    message: 'Temperature threshold exceeded (31.5°C > 30.0°C) for INVX-2026-002',
+    batchId: 'INVX-2026-002',
     iotNodeId: 'NODE-003-TRANSIT',
     acknowledged: false,
     status: 'ACTIVE',
@@ -198,7 +198,7 @@ const STAGES = ['FARM', 'COLLECTION', 'PROCESSING', 'WAREHOUSE', 'DISTRIBUTION',
 function generateTimelineForBatch(batch: DemoBatch): DemoTimelineEvent[] {
   const baseTime = new Date(batch.createdAt).getTime();
   const stages = [
-    { stage: 'FARM', loc: batch.origin || 'Jabalpur Farm', notes: 'Harvested & Quality Checked at source' },
+    { stage: 'FARM', loc: batch.origin || 'Green Valley Farm, Jabalpur', notes: 'Harvested & Quality Checked at source' },
     { stage: 'COLLECTION', loc: 'Central Aggregation Depot, Jabalpur', notes: 'Graded, weighed, and IoT sensor tagged' },
     { stage: 'PROCESSING', loc: 'EcoFoods Processing Unit, MP', notes: 'Cleaned, sorted, and certified organic' },
     { stage: 'WAREHOUSE', loc: 'Central Cold Storage, Nagpur', notes: 'Stored in temperature-controlled zone (4-6°C)' },
@@ -229,13 +229,13 @@ class DemoStore {
 
   private load() {
     try {
-      const b = localStorage.getItem('inovix_demo_batches');
+      const b = localStorage.getItem('inovix_production_batches');
       this.batches = b ? JSON.parse(b) : [...INITIAL_BATCHES];
 
-      const n = localStorage.getItem('inovix_demo_nodes');
+      const n = localStorage.getItem('inovix_production_nodes');
       this.nodes = n ? JSON.parse(n) : [...INITIAL_NODES];
 
-      const a = localStorage.getItem('inovix_demo_alerts');
+      const a = localStorage.getItem('inovix_production_alerts');
       this.alerts = a ? JSON.parse(a) : [...INITIAL_ALERTS];
 
       // Populate token map
@@ -244,6 +244,10 @@ class DemoStore {
           this.tokenMap[batch.qrToken] = batch.id;
         }
         this.tokenMap[batch.id] = batch.id;
+        // Legacy alias support
+        if (batch.id.startsWith('INVX-')) {
+          this.tokenMap[batch.id.replace('INVX-', 'BATCH-')] = batch.id;
+        }
       });
     } catch {
       this.batches = [...INITIAL_BATCHES];
@@ -254,11 +258,11 @@ class DemoStore {
 
   private save() {
     try {
-      localStorage.setItem('inovix_demo_batches', JSON.stringify(this.batches));
-      localStorage.setItem('inovix_demo_nodes', JSON.stringify(this.nodes));
-      localStorage.setItem('inovix_demo_alerts', JSON.stringify(this.alerts));
+      localStorage.setItem('inovix_production_batches', JSON.stringify(this.batches));
+      localStorage.setItem('inovix_production_nodes', JSON.stringify(this.nodes));
+      localStorage.setItem('inovix_production_alerts', JSON.stringify(this.alerts));
     } catch (e) {
-      console.warn('Could not save demo store to localStorage:', e);
+      console.warn('Could not save store to localStorage:', e);
     }
   }
 
@@ -275,13 +279,15 @@ class DemoStore {
   }
 
   getBatchById(id: string): DemoBatch | undefined {
-    return this.batches.find((b) => b.id.toUpperCase() === id.toUpperCase());
+    const cleanId = id.toUpperCase();
+    const resolvedId = this.tokenMap[cleanId] || cleanId;
+    return this.batches.find((b) => b.id.toUpperCase() === resolvedId.toUpperCase());
   }
 
-  createBatch(data: { productName: string; quantity: number; unit?: string; origin?: string }): DemoBatch {
+  createBatch(data: { productName: string; quantity: number; unit?: string; origin?: string; farmer?: string }): DemoBatch {
     const nextNum = this.batches.length + 1;
     const padded = String(nextNum).padStart(3, '0');
-    const newId = `BATCH-2026-${padded}`;
+    const newId = `INVX-2026-${padded}`;
     const token = `VTOK-${data.productName.substring(0, 4).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
 
     const newBatch: DemoBatch = {
@@ -291,8 +297,8 @@ class DemoStore {
       unit: data.unit || 'kg',
       currentStage: 'FARM',
       status: 'Harvested',
-      origin: data.origin || 'Jabalpur Farm',
-      farmer: 'Demo Farmer',
+      origin: data.origin || 'Green Valley Farm',
+      farmer: data.farmer || 'Rajesh Kumar',
       createdAt: new Date().toISOString(),
       qrToken: token,
       harvestDate: new Date().toISOString().split('T')[0],
@@ -365,7 +371,7 @@ class DemoStore {
     const batch = this.getBatchById(batchId);
     if (!batch) throw new Error('Batch not found');
     if (!batch.qrToken) {
-      batch.qrToken = `VTOK-${batch.id.replace('BATCH-', '')}-${Math.floor(1000 + Math.random() * 9000)}`;
+      batch.qrToken = `VTOK-${batch.id.replace('INVX-', '')}-${Math.floor(1000 + Math.random() * 9000)}`;
       this.tokenMap[batch.qrToken] = batch.id;
       this.save();
     }
@@ -401,7 +407,7 @@ class DemoStore {
         unit: batch.unit,
         origin: batch.origin,
         farmName: batch.origin,
-        producer: { name: batch.farmer, organization: 'Jabalpur Organic Collective' },
+        producer: { name: batch.farmer, organization: 'Green Valley Organic Collective' },
         currentStage: batch.currentStage,
         status: batch.status,
         harvestDate: batch.harvestDate || '2026-09-22',
@@ -430,14 +436,14 @@ export const demoStore = new DemoStore();
 
 export function isDemoModeActive(): boolean {
   if (typeof window === 'undefined') return true;
-  const stored = localStorage.getItem('inovix_demo_mode');
-  if (stored === null) return true; // Default to TRUE for judges demo reliability
-  return stored !== 'false';
+  const stored = localStorage.getItem('inovix_active_data_source');
+  if (stored === null) return true; // Default to TRUE for presentation reliability
+  return stored !== 'remote';
 }
 
 export function setDemoModeActive(active: boolean) {
   if (typeof window !== 'undefined') {
-    localStorage.setItem('inovix_demo_mode', active ? 'true' : 'false');
-    window.dispatchEvent(new Event('inovix-demo-mode-changed'));
+    localStorage.setItem('inovix_active_data_source', active ? 'local' : 'remote');
+    window.dispatchEvent(new Event('inovix-mode-changed'));
   }
 }

@@ -166,43 +166,19 @@ export const Sidebar: React.FC = () => {
         })}
       </div>
 
-      <div className="p-4 border-t border-gray-100 space-y-4">
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center justify-between">
-            {!collapsed && <span className="text-sm font-medium text-gray-600">Demo Mode</span>}
-            <button
-              onClick={toggleDemoMode}
-              className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${isDemoMode ? 'bg-primary-500' : 'bg-gray-300'}`}
-              title="Toggle Demo Mode"
-            >
-              <span className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${isDemoMode ? 'translate-x-5' : 'translate-x-1'}`} />
-            </button>
-          </div>
-          
-          <div className="flex items-center justify-between">
-            {!collapsed && <span className="text-sm font-medium text-gray-600">Network</span>}
-            <button
-              onClick={() => setIsOnline(!isOnline)}
-              className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${isOnline ? 'bg-green-500' : 'bg-red-500'}`}
-              title="Toggle Online Status"
-            >
-              <span className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${isOnline ? 'translate-x-5' : 'translate-x-1'}`} />
-            </button>
-          </div>
-        </div>
-
-        <div className={`flex items-center ${collapsed ? 'justify-center' : 'gap-3'} pt-2`}>
-          <div className="w-9 h-9 rounded-full bg-gray-200 overflow-hidden flex-shrink-0 flex items-center justify-center font-bold text-gray-500">
-            {user?.name?.charAt(0) || 'U'}
+      <div className="p-4 border-t border-gray-100 space-y-3">
+        <div className={`flex items-center ${collapsed ? 'justify-center' : 'gap-3'}`}>
+          <div className="w-9 h-9 rounded-full bg-primary-100 text-primary-800 overflow-hidden flex-shrink-0 flex items-center justify-center font-bold text-sm">
+            {user?.name?.charAt(0) || 'R'}
           </div>
           {!collapsed && (
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">{user?.name}</p>
-              <p className="text-xs text-gray-500 truncate capitalize">{user?.role?.replace('_', ' ')}</p>
+              <p className="text-sm font-bold text-gray-900 truncate">{user?.name || 'Rajesh Kumar'}</p>
+              <p className="text-xs text-gray-500 truncate capitalize">{user?.role ? user.role.toLowerCase().replace('_', ' ') : 'Farmer'}</p>
             </div>
           )}
           {!collapsed && (
-            <button onClick={logout} className="p-1.5 text-gray-400 hover:text-red-500 rounded-md hover:bg-red-50 transition-colors">
+            <button onClick={logout} title="Sign Out" className="p-1.5 text-gray-400 hover:text-red-500 rounded-md hover:bg-red-50 transition-colors">
               <LogOut size={18} />
             </button>
           )}

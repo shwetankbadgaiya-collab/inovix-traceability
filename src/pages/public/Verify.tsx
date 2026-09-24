@@ -97,9 +97,9 @@ export default function Verify() {
             </button>
           </form>
 
-          {/* Quick Demo Chips */}
+          {/* Sample Verification Batches */}
           <div className="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-gray-100 text-[11px] text-gray-500">
-            <span className="font-semibold text-gray-400">Quick Test:</span>
+            <span className="font-semibold text-gray-400">Sample Batches:</span>
             <button 
               type="button" 
               onClick={() => { setInputToken('VTOK-TOMATO-8812'); performVerification('VTOK-TOMATO-8812'); }}
@@ -109,17 +109,17 @@ export default function Verify() {
             </button>
             <button 
               type="button" 
-              onClick={() => { setInputToken('BATCH-2026-002'); performVerification('BATCH-2026-002'); }}
+              onClick={() => { setInputToken('INVX-2026-002'); performVerification('INVX-2026-002'); }}
               className="bg-gray-100 hover:bg-primary-50 hover:text-primary-700 px-2 py-0.5 rounded font-mono transition-colors"
             >
-              Wheat (BATCH-2026-002)
+              Organic Wheat (INVX-2026-002)
             </button>
             <button 
               type="button" 
-              onClick={() => { setInputToken('BATCH-2026-003'); performVerification('BATCH-2026-003'); }}
+              onClick={() => { setInputToken('INVX-2026-003'); performVerification('INVX-2026-003'); }}
               className="bg-gray-100 hover:bg-primary-50 hover:text-primary-700 px-2 py-0.5 rounded font-mono transition-colors"
             >
-              Potatoes (BATCH-2026-003)
+              Fresh Potatoes (INVX-2026-003)
             </button>
           </div>
         </div>
@@ -179,11 +179,11 @@ export default function Verify() {
                 </div>
                 <div>
                   <span className="text-gray-400 block text-[11px] uppercase font-semibold">Origin Farm</span>
-                  <span className="font-medium text-gray-800">{data.batch.origin || 'Jabalpur Farm'}</span>
+                  <span className="font-medium text-gray-800">{data.batch.origin || 'Green Valley Farm, Jabalpur'}</span>
                 </div>
                 <div>
                   <span className="text-gray-400 block text-[11px] uppercase font-semibold">Producer</span>
-                  <span className="font-medium text-gray-800">{data.batch.producer?.name || data.batch.farmer || 'Demo Farmer'}</span>
+                  <span className="font-medium text-gray-800">{data.batch.producer?.name || data.batch.farmer || 'Rajesh Kumar'}</span>
                 </div>
                 <div>
                   <span className="text-gray-400 block text-[11px] uppercase font-semibold">Quantity</span>

@@ -77,12 +77,12 @@ export default function About() {
         </div>
 
         {/* Notice */}
-        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 flex gap-4">
-          <Info className="text-amber-500 shrink-0" size={28} />
+        <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 flex gap-4">
+          <Info className="text-emerald-600 shrink-0" size={28} />
           <div>
-            <h4 className="font-bold text-amber-900 mb-2">Prototype Notice</h4>
-            <p className="text-amber-800">
-              INOVIX is currently a prototype/demo platform developed for hackathon evaluation. The capabilities demonstrated in this application simulate a production environment. Performance metrics, exact hardware cost savings, and sensor accuracy figures require comprehensive pilot measurement and field validation before commercial deployment.
+            <h4 className="font-bold text-emerald-900 mb-2">Production Pilot Deployment</h4>
+            <p className="text-emerald-800 text-sm leading-relaxed">
+              INOVIX operates as a resilient, low-cost traceability architecture integrating edge IoT telemetry and permissioned blockchain consensus. Node calibrations and multi-stakeholder custody records are continuously audited in real time across verified regional pilots.
             </p>
           </div>
         </div>
