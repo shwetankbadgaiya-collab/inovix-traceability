@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "node scripts/prepare-db.js && prisma generate && tsc",
-    "start": "node dist/index.js",
+    "start": "node scripts/prepare-db.js && prisma db push && node dist/index.js",
     "postinstall": "prisma generate",
     "db:generate": "node scripts/prepare-db.js && prisma generate",
     "db:push": "node scripts/prepare-db.js && prisma db push",
@@ -21,6 +21,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
+    "prisma": "^6.2.0",
     "qrcode": "^1.5.4",
     "socket.io": "^4.8.1",
     "uuid": "^11.0.5",
@@ -34,7 +35,6 @@
     "@types/node": "^22.10.5",
     "@types/qrcode": "^1.5.5",
     "@types/uuid": "^10.0.0",
-    "prisma": "^6.2.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3"
   }
