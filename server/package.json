@@ -5,13 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
+    "build": "node scripts/prepare-db.js && prisma generate && tsc",
     "start": "node dist/index.js",
     "postinstall": "prisma generate",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:migrate": "prisma migrate dev",
+    "db:generate": "node scripts/prepare-db.js && prisma generate",
+    "db:push": "node scripts/prepare-db.js && prisma db push",
     "db:seed": "tsx prisma/seed.ts",
+    "db:migrate": "prisma migrate dev",
     "db:reset": "prisma migrate reset --force"
   },
   "dependencies": {
