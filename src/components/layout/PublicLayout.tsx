@@ -37,7 +37,7 @@ export const PublicLayout: React.FC = () => {
             <Link to="/login">
               <Button variant="ghost">Log In</Button>
             </Link>
-            <Link to="/signup" className="hidden sm:block">
+            <Link to="/login" className="hidden sm:block">
               <Button variant="primary">Get Started</Button>
             </Link>
           </div>

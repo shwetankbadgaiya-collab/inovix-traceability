@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Bell, Search } from 'lucide-react';
+import { Menu, Bell, Sparkles } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { StatusDot } from '../ui/StatusDot';
 import { useAuth } from '../../contexts/AuthContext';
@@ -29,7 +29,21 @@ export const Navbar: React.FC<{ onMenuClick?: () => void }> = ({ onMenuClick }) 
         </h1>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3 sm:gap-4">
+        {/* Demo Mode Toggle Button */}
+        <button
+          onClick={toggleDemoMode}
+          title={isDemoMode ? "Demo Mode Active (Using local reliable state). Click to toggle Live API." : "Live Backend Mode. Click to switch to Demo Mode."}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm ${
+            isDemoMode 
+              ? 'bg-emerald-600 text-white shadow-[0_0_12px_rgba(16,185,129,0.35)] hover:bg-emerald-700' 
+              : 'bg-gray-100 text-gray-700 border border-gray-300 hover:bg-gray-200'
+          }`}
+        >
+          <Sparkles className={`w-3.5 h-3.5 ${isDemoMode ? 'text-yellow-300' : 'text-gray-400'}`} />
+          <span>{isDemoMode ? 'Demo Mode: ON' : 'Live API'}</span>
+        </button>
+
         {/* Network Status */}
         <div className="hidden sm:flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-full border border-gray-200">
           <StatusDot status={isOnline ? 'online' : 'offline'} />
@@ -38,18 +52,6 @@ export const Navbar: React.FC<{ onMenuClick?: () => void }> = ({ onMenuClick }) 
           </span>
         </div>
 
-        {/* Demo Button */}
-        <button
-          onClick={toggleDemoMode}
-          className={`hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-medium transition-colors ${
-            isDemoMode 
-              ? 'bg-green-50 border-green-200 text-green-700 shadow-[0_0_10px_rgba(34,197,94,0.2)]' 
-              : 'bg-gray-50 border-gray-200 text-gray-500'
-          }`}
-        >
-          Demo
-        </button>
-
         {/* Notifications */}
         <button className="relative p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
           <Bell size={20} />
@@ -57,8 +59,8 @@ export const Navbar: React.FC<{ onMenuClick?: () => void }> = ({ onMenuClick }) 
         </button>
 
         {/* Mobile Avatar */}
-        <div className="md:hidden w-8 h-8 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center font-bold text-gray-500 text-sm">
-          {user?.name?.charAt(0) || 'U'}
+        <div className="md:hidden w-8 h-8 rounded-full bg-primary-100 text-primary-800 font-bold overflow-hidden flex items-center justify-center text-xs">
+          {user?.name?.charAt(0) || 'D'}
         </div>
       </div>
     </header>

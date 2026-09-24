@@ -48,10 +48,12 @@ function App() {
 
       {/* Public QR Verification (no layout chrome) */}
       <Route path="/verify" element={<Verify />} />
+      <Route path="/verify/:token" element={<Verify />} />
       <Route path="/verify/:batchId" element={<Verify />} />
 
-      {/* Login */}
+      {/* Login & Signup alias */}
       <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Login />} />
 
       {/* Protected Dashboard Routes */}
       <Route
@@ -64,6 +66,7 @@ function App() {
       >
         <Route index element={<Dashboard />} />
         <Route path="batches" element={<Batches />} />
+        <Route path="create-batch" element={<Batches initialCreate={true} />} />
         <Route path="batches/:batchId" element={<BatchDetail />} />
         <Route path="iot" element={<IoTMonitoring />} />
         <Route path="blockchain" element={<Blockchain />} />
@@ -72,6 +75,25 @@ function App() {
         <Route path="analytics" element={<Analytics />} />
         <Route path="users" element={<Users />} />
         <Route path="settings" element={<Settings />} />
+
+        {/* Role navigation aliases to ensure zero broken buttons */}
+        <Route path="incoming" element={<Batches />} />
+        <Route path="collections" element={<Batches />} />
+        <Route path="stored" element={<Batches />} />
+        <Route path="shipments" element={<Batches />} />
+        <Route path="received" element={<Batches />} />
+        <Route path="records" element={<Batches />} />
+        <Route path="inventory" element={<Batches />} />
+        <Route path="history" element={<Batches />} />
+        <Route path="journey" element={<Batches />} />
+        <Route path="processing" element={<Blockchain />} />
+        <Route path="transform" element={<Blockchain />} />
+        <Route path="audit" element={<Blockchain />} />
+        <Route path="scan" element={<QRCode />} />
+        <Route path="verification" element={<QRCode />} />
+        <Route path="env" element={<IoTMonitoring />} />
+        <Route path="location" element={<IoTMonitoring />} />
+        <Route path="compliance" element={<Analytics />} />
       </Route>
 
       {/* Catch-all redirect */}
