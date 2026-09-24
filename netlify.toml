@@ -4,6 +4,7 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  VITE_API_URL = "https://inovix-traceability.onrender.com"
 
 # Single-Page Application (SPA) redirect rule
 # Ensures direct visits / refreshes on routes like /dashboard, /batches/INV-2026-001, /verify/:token do not 404

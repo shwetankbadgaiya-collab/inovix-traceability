@@ -13,32 +13,45 @@ import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
 
-const allowedOrigins = [
+// Configured origins supporting FRONTEND_URL, CORS_ORIGIN, Netlify, and local dev
+const configuredOrigins = [
   process.env.FRONTEND_URL,
+  process.env.CORS_ORIGIN,
+  'https://inovix-traceability.netlify.app',
   'http://localhost:3000',
   'http://localhost:5173',
   'http://127.0.0.1:3000',
-].filter(Boolean) as string[];
+  'http://localhost:5000',
+]
+  .filter(Boolean)
+  .flatMap((url) => (url as string).split(',').map((u) => u.trim().replace(/\/+$/, '')))
+  .filter(Boolean);
 
-app.use(cors({
+const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps, curl, server-to-server)
+    // Allow non-browser requests (mobile apps, curl, server-to-server)
     if (!origin) return callback(null, true);
-    
-    // Allow configured frontend URL, Netlify domains, or local dev
+
+    const cleanOrigin = origin.trim().replace(/\/+$/, '');
+
+    // Allow explicitly configured origins, any Netlify subdomain, or non-production modes
     if (
-      allowedOrigins.includes(origin) ||
-      /\.netlify\.app$/.test(origin) ||
+      configuredOrigins.includes(cleanOrigin) ||
+      /\.netlify\.app$/i.test(cleanOrigin) ||
       process.env.NODE_ENV !== 'production'
     ) {
       return callback(null, true);
     }
-    return callback(new Error(`CORS origin ${origin} not allowed by INOVIX policy`));
+
+    return callback(null, false);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use(express.json());
 
